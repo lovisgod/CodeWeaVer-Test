@@ -20,9 +20,10 @@ app.use(cookieParser());
 app.use('/api/v1', indexRouter);
 
 // catch 404 and forward to error handler
-app.use((req, res, next) => {
-  next(createError(404));
-});
+app.all('/*', (req, res) => res.status(404).send({
+  status: 'error',
+  error: 'This route is unavailable on this server',
+}));
 
 // get the unhandled rejection and throw it to another fallback handler we already have.
 process.on('unhandledRejection', (error, promise) => {

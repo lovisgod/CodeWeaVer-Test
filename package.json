@@ -4,9 +4,11 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "test": "nyc mocha 'test/**/*.js' --recursive --timeout 60000 --exit",
     "dev": "nodemon --exec babel-node src/bin/www.js",
     "start": "npm run build && node build/bin/www",
-    "build": "babel src --out-dir build"
+    "build": "babel src --out-dir build",
+    "coverage": "cross-env NODE_ENV=test nyc npm run test && nyc report --reporter=lcov --reporter=text-lcov --exit"
   },
   "dependencies": {
     "cookie-parser": "~1.4.4",
@@ -30,11 +32,26 @@
     "babel-eslint": "^10.0.3",
     "chai": "^4.2.0",
     "chai-http": "^4.3.0",
+    "cross-env": "^5.2.0",
     "eslint": "^6.2.2",
     "eslint-config-airbnb-base": "^14.0.0",
     "eslint-plugin-import": "^2.18.2",
-    "mocha": "^6.2.0",
-    "nodemailer-mock": "^1.4.3",
-    "nodemon": "^1.19.1"
+    "mocha": "^8.0.0",
+    "nodemon": "^1.19.1",
+    "nyc": "^15.1.0"
+  },
+  "nyc": {
+    "exclude": [
+      "src/models/index.js",
+      "src/models",
+      "tests",
+      "node_modules"
+    ],
+    "require": [
+      "@babel/register"
+    ],
+    "sourceMap": false,
+    "cache": false,
+    "report-dir": "tests/report"
   }
 }
