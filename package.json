@@ -2,8 +2,9 @@
   "name": "codeweaver-test",
   "version": "0.0.0",
   "private": true,
+  "type": "module",
   "scripts": {
-    "dev": "nodemon --exec babel-node src/index.js",
+    "dev": "nodemon --exec babel-node src/bin/www.js",
     "start": "npm run build && node build/bin/www",
     "build": "babel src --out-dir build"
   },

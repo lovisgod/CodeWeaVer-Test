@@ -1,11 +1,14 @@
-const createError = require('http-errors');
-const express = require('express');
-const cookieParser = require('cookie-parser');
-const logger = require('morgan');
+/* eslint-disable import/extensions */
+import createError from 'http-errors';
+import express from 'express';
 
-const indexRouter = require('./routes/index');
-const { default: BaseError } = require('./ErrorHelpers/BaseError');
-const { default: ErrorHandler } = require('./ErrorHelpers/ErrorHandler');
+import cookieParser from 'cookie-parser';
+import logger from 'morgan';
+
+import indexRouter from './routes/index.js';
+
+import ErrorHandler from './ErrorHelpers/ErrorHandler.js';
+import { sendErrorResponse } from './utils/sendResponses.js';
 
 const app = express();
 
@@ -14,7 +17,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
-app.use('/', indexRouter);
+app.use('/api/v1', indexRouter);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
@@ -36,20 +39,16 @@ process.on('uncaughtException', (error) => {
 
 // error handler
 app.use(async (err, req, res, next) => {
-  // // set locals, only providing error in development
-  // res.locals.message = err.message;
-  // res.locals.error = req.app.get('env') === 'development' ? err : {};
-
-  if (err instanceof BaseError) {
+  if (err instanceof Error) {
     if (ErrorHandler.isTrustedError(err)) {
       await ErrorHandler.handleError(err, res);
     } else {
-      // render the error page
-      res.status(err.status || 500).send(err);
+      console.error(err.stack);
+      sendErrorResponse(res, err.status || 500, err.message);
     }
   } else {
     next(err);
   }
 });
 
-module.exports = app;
+export default app;

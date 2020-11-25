@@ -1,27 +1,27 @@
-const { default: Student } = require('../domain/Student');
+import Student from '../domain/Student.js';
 
 class DataSource {
   constructor(dataRepo) {
     this.dataRepo = dataRepo;
   }
 
-  createStudent(student) {
+  async createStudent(student) {
     if (student instanceof Student) {
-      this.dataRepo.createStudent(student);
+      await this.dataRepo.createStudent(student);
     }
   }
 
-  listStudents(size) {
+  async listStudents(size) {
     return this.dataRepo.listStudents(size);
   }
 
-  updateStudentById(id, student) {
+  async updateStudentById(id, student) {
     if (student instanceof Student) {
-      this.dataRepo.updateStudentById(id, student);
+      await this.dataRepo.updateStudentById(id, student);
     }
   }
 
-  deleteStudentById(id) {
+  async deleteStudentById(id) {
     return this.dataRepo.deleteStudentById(id);
   }
 }
