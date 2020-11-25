@@ -2,39 +2,39 @@
 /* eslint-disable no-useless-constructor */
 // import db into this repo
 
-import Student from '../domain/Student.js';
+import { Student } from '../../../models';
 
-let students = [];
 class DataRepo {
   // eslint-disable-next-line no-empty-function
   constructor() {
   }
 
   createStudent(student) {
-    console.log(student);
-    if (student instanceof Student) {
-      students.push(student);
-      console.log(students);
-    }
+    return Student.create(student);
   }
 
   listStudents(size) {
-    console.log(students);
-    if (size !== undefined || size < 1) {
-      return students;
+    if (size) {
+      return Student.findAll();
     }
-    return students;
+    return Student.findAll({ limit: size });
   }
 
   updateStudentById(id, student) {
-    if (student instanceof Student) {
-      students.push(student);
-    }
+    return Student.update({
+      student,
+    }, {
+      returning: true,
+      where: {
+        uuid: id,
+      },
+    });
   }
 
   deleteStudentById(id) {
-    students.splice(students.indexOf(id));
-    return students;
+    return Student.destroy({
+      where: { uuid: id },
+    });
   }
 }
 
