@@ -4,6 +4,7 @@ import DataSource from '../core/data/DataSource.js';
 import Student from '../core/domain/Student.js';
 import { sendSuccessResponse } from '../utils/sendResponses.js';
 import GeneralError from '../ErrorHelpers/GeneralError.js';
+import { use } from 'chai';
 
 class ApiRepo {
   constructor() {
@@ -31,7 +32,6 @@ class ApiRepo {
   async listStudents(req, res, next) {
     try {
       const repo = new ApiRepo();
-      if (!req.query.size) throw new GeneralError('error', 400, true, 'query cannot be empty');
       const students = await repo.dataSource.listStudents(
         req.query.size ? req.query.size : 10,
       );
@@ -44,14 +44,15 @@ class ApiRepo {
   async updateStudent(req, res, next) {
     try {
       const student = new Student(
-        req.email,
-        req.firstName,
-        req.lastName,
-        req.phone,
+        req.body.email,
+        req.body.firstName,
+        req.body.lastName,
+        req.body.phone,
       );
       const repo = new ApiRepo();
+      if (!req.query.id) throw new GeneralError('error', 400, true, 'user id must not be empty');
       await repo.dataSource.updateStudentById(req.query.id, student);
-      return sendSuccessResponse(res, 200, 'Updated Successfully');
+      return sendSuccessResponse(res, 200, 'Updated successfully');
     } catch (error) {
       return next(error);
     }
@@ -60,7 +61,8 @@ class ApiRepo {
   async deleteStudent(req, res, next) {
     try {
       const repo = new ApiRepo();
-      await repo.dataSource.deleteStudentById(req.query.id);
+      const user = await repo.dataSource.deleteStudentById(req.query.id);
+      if (user === 0) throw new GeneralError('error', 404, true, 'student id not correct please check your input');
       return sendSuccessResponse(res, 201, 'Deleted Succesfully');
     } catch (error) {
       return next(error);

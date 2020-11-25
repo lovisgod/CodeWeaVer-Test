@@ -16,9 +16,7 @@ class DataSource {
   }
 
   async updateStudentById(id, student) {
-    if (student instanceof Student) {
-      await this.dataRepo.updateStudentById(id, student);
-    }
+    return this.dataRepo.updateStudentById(id, student);
   }
 
   async deleteStudentById(id) {

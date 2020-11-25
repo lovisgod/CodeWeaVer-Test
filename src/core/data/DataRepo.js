@@ -22,18 +22,18 @@ class DataRepo {
 
   updateStudentById(id, student) {
     return Student.update({
-      student,
+      ...student,
     }, {
       returning: true,
       where: {
-        uuid: id,
+        id,
       },
     });
   }
 
   deleteStudentById(id) {
     return Student.destroy({
-      where: { uuid: id },
+      where: { id },
     });
   }
 }
