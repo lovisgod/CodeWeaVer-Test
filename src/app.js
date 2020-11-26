@@ -10,12 +10,17 @@ import indexRouter from './routes/index.js';
 import ErrorHandler from './ErrorHelpers/ErrorHandler.js';
 import { sendErrorResponse } from './utils/sendResponses.js';
 
+const swaggerUi = require('swagger-ui-express');
+const swaggerDocument = require('../swagger.json');
+
 const app = express();
 
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.use('/api/v1', indexRouter);
 

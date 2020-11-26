@@ -4,7 +4,6 @@ import DataSource from '../core/data/DataSource.js';
 import Student from '../core/domain/Student.js';
 import { sendSuccessResponse } from '../utils/sendResponses.js';
 import GeneralError from '../ErrorHelpers/GeneralError.js';
-import { use } from 'chai';
 
 class ApiRepo {
   constructor() {
