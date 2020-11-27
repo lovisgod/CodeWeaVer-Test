@@ -1,0 +1,182 @@
+{
+    "swagger": "2.0",
+    "info": {
+    "version": "1.0.0",
+    "title": "CodeWeaver-Test",
+    "description": "Test API for CodeWeaver Placement",
+    "license": {
+    "name": "MIT",
+    "url": "https://opensource.org/licenses/MIT"
+    }
+    },
+    "host": "localhost:3000",
+    "basePath": "/api/v1",
+    "tags": [
+    {
+    "name": "Student Records",
+    "description": "API for creating, editing, listing and deleting Student records"
+    }
+    ],
+    "schemes": [
+    "http"
+    ],
+    "consumes": [
+    "application/json"
+    ],
+    "produces": [
+    "application/json"
+    ],
+    "paths": {
+        "/create-student": {
+        "post": {
+        "tags": [
+        "create-student"
+        ],
+        "parameters": [
+            {
+                "in": "body",
+                "name": "body",
+                "description": "Student object that will be supplied",
+                "required": true,
+                "schema": {
+                  "$ref": "#/definitions/Student"
+                }
+              }
+            ],
+        "summary": "Create a student record",
+        "responses": {
+        "200": {
+        "description": "Created Successfully"
+        },
+        "500": {
+            "description": "Error that may occur due to server error"
+        }
+        }
+        }
+        },
+        "/list-students": {
+            "get": {
+            "tags": [
+            "list-students"
+            ],
+            "parameters": [
+                {
+                    "name": "size",
+                    "in": "query",
+                    "description": "Number of items to return",
+                    "required": false,
+                    "type": "integer",
+                    "format": "int64"
+                  }
+                ],
+            "summary": "List students",
+            "responses": {
+                "200": {
+                    "description": "successful operation",
+                    "schema": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/definitions/Student"
+                      }
+                    }
+                  },
+                  "400": {
+                    "description": "Invalid size value"
+                  },
+              "500": {
+                "description": "Error that may occur due to server error"
+            }
+            }
+            }
+            },
+            "/update-student": {
+                "put": {
+                "tags": [
+                "update-student"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "description": "ID of the item to update",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "Student object that will be supplied",
+                        "required": true,
+                        "schema": {
+                          "$ref": "#/definitions/Student"
+                        }
+                      }
+                    ],
+                "summary": "update a student record",
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                      },
+                      "404": {
+                        "description": "Id not found for any item"
+                      },
+                  "500": {
+                    "description": "Error that may occur due to server error"
+                }
+                }
+                }
+                },
+                "/delete-student": {
+                    "delete": {
+                    "tags": [
+                    "delete-student"
+                    ],
+                    "parameters": [
+                        {
+                            "name": "id",
+                            "in": "query",
+                            "description": "ID of the item to delete",
+                            "required": true,
+                            "type": "string"
+                        }
+                        ],
+                    "summary": "delete a student record",
+                    "responses": {
+                        "200": {
+                            "description": "successful operation"
+                          },
+                          "404": {
+                            "description": "Id not found for any item"
+                          },
+                      "500": {
+                        "description": "Error that may occur due to server error"
+                    }
+                    }
+                    }
+                    }
+        },
+        "definitions": {
+            "Student": {
+            "required": [
+            "phone",
+            "email",
+            "lastName",
+            "firstName"
+            ],
+            "properties": {
+            "firstName": {
+                "type": "string"
+            },
+            "lastName": {
+                "type": "string"
+            },
+            "email": {
+                "type": "string"
+            },
+            "phone": {
+                "type": "string"
+            }
+            }
+            }
+ }
+}

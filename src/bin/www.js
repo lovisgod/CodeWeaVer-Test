@@ -4,10 +4,8 @@
  * Module dependencies.
  */
 
-const { createServer } = require('http');
-
-const debug = require('debug')('codeweaver-test:server');
-const app = require('../app');
+import { createServer } from 'http';
+import app from '../app.js';
 
 /**
  * Normalize a port into a number, string, or false.
@@ -79,7 +77,7 @@ function onListening() {
   const bind = typeof addr === 'string'
     ? `pipe ${addr}`
     : `port ${addr.port}`;
-  debug(`Listening on ${bind}`);
+  console.info(`Listening on ${bind}`);
 }
 
 /**

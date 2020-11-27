@@ -1,34 +1,40 @@
+/* eslint-disable class-methods-use-this */
+/* eslint-disable no-useless-constructor */
 // import db into this repo
 
-const { default: Student } = require('../domain/Student');
+import { Student } from '../../../models';
 
 class DataRepo {
+  // eslint-disable-next-line no-empty-function
   constructor() {
-    this.students = [];
   }
 
   createStudent(student) {
-    if (student instanceof Student) {
-      this.students.push(student);
-    }
+    return Student.create(student);
   }
 
   listStudents(size) {
-    if (size !== undefined || size < 1) {
-      return this.students;
+    if (size) {
+      return Student.findAll();
     }
-    return this.students;
+    return Student.findAll({ limit: size });
   }
 
   updateStudentById(id, student) {
-    if (student instanceof Student) {
-      this.students.push(student);
-    }
+    return Student.update({
+      ...student,
+    }, {
+      returning: true,
+      where: {
+        id,
+      },
+    });
   }
 
   deleteStudentById(id) {
-    this.students.splice(this.students.indexOf(id));
-    return this.students;
+    return Student.destroy({
+      where: { id },
+    });
   }
 }
 

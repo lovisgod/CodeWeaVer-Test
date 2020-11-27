@@ -1,5 +1,5 @@
-import BaseError from './BaseError';
-import HttpStatusCode from './Statuscode';
+import BaseError from './BaseError.js';
+import HttpStatusCode from './Statuscode.js';
 
 class ServerError extends BaseError {
   constructor(name,

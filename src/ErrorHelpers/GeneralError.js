@@ -1,5 +1,6 @@
+/* eslint-disable import/extensions */
 /* eslint-disable no-useless-constructor */
-import BaseError from './BaseError';
+import BaseError from './BaseError.js';
 
 class GeneralError extends BaseError {
   constructor(name, httpCode, isOperational, description) {
