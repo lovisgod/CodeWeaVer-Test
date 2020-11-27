@@ -1,10 +1,19 @@
 /* eslint-disable class-methods-use-this */
+
+/**
+@module ApiRepo
+* */
+
 import DataRepo from '../core/data/DataRepo.js';
 import DataSource from '../core/data/DataSource.js';
 import Student from '../core/domain/Student.js';
 import { sendSuccessResponse } from '../utils/sendResponses.js';
 import GeneralError from '../ErrorHelpers/GeneralError.js';
 
+/**
+@class ApiRepo
+Constructor, this constructs new ApiRepo class
+* */
 class ApiRepo {
   constructor() {
     this.dataRepo = new DataRepo();
@@ -12,6 +21,15 @@ class ApiRepo {
     // this.createStudent.bind(this);
   }
 
+  /*
+ * @api [post] /create-student
+ * description: "Create a student record"
+ * parameters:
+ *   - (body) {Student} A student's body
+ * responses:
+ *   200:
+ *     description: Created Successfully
+ */
   async createStudent(req, res, next) {
     try {
       const student = new Student(
@@ -28,6 +46,15 @@ class ApiRepo {
     }
   }
 
+  /*
+ * @api [get] /list-students
+ * description: "List student records"
+ * parameters:
+ *   - (query) size {Integer:int32} The number of resources to return
+ * responses:
+ *   200:
+ *     description: Successful operation
+ */
   async listStudents(req, res, next) {
     try {
       const repo = new ApiRepo();
@@ -40,6 +67,16 @@ class ApiRepo {
     }
   }
 
+  /*
+ * @api [put] /update-student
+ * description: "Update a student record"
+ * parameters:
+ *   - (id) id {string} The id of the record to update
+ *   - (body) {Student} A student's body
+ * responses:
+ *   200:
+ *     description: Updated Successfully
+ */
   async updateStudent(req, res, next) {
     try {
       const student = new Student(
@@ -57,6 +94,15 @@ class ApiRepo {
     }
   }
 
+  /*
+ * @api [delete] /delete-student
+ * description: "delete a student record"
+ * parameters:
+ *   - (id) id {string} The id of the record to delete
+ * responses:
+ *   200:
+ *     description: Deleted Successfully
+ */
   async deleteStudent(req, res, next) {
     try {
       const repo = new ApiRepo();
