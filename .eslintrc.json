@@ -18,6 +18,7 @@
 	"rules": {
 		
 		"arrow-parens": 0,
-		"linebreak-style": 0
+		"linebreak-style": 0,
+		"import/extensions": 0
 	}
 }

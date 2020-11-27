@@ -1,24 +1,39 @@
-const createError = require('http-errors');
-const express = require('express');
-const cookieParser = require('cookie-parser');
-const logger = require('morgan');
+/* eslint-disable import/extensions */
+import express from 'express';
 
-const indexRouter = require('./routes/index');
-const { default: BaseError } = require('./ErrorHelpers/BaseError');
-const { default: ErrorHandler } = require('./ErrorHelpers/ErrorHandler');
+import cookieParser from 'cookie-parser';
+import morgan from 'morgan';
+
+import indexRouter from './routes/index.js';
+
+import ErrorHandler from './ErrorHelpers/ErrorHandler.js';
+import { sendErrorResponse } from './utils/sendResponses.js';
+
+// logs with wiston
+import wiston from './ErrorHelpers/WistonLogger.js';
+
+const swaggerUi = require('swagger-ui-express');
+const swaggerDocument = require('../swagger.json');
 
 const app = express();
 
-app.use(logger('dev'));
+// add stream option to morgan
+app.use(morgan('combined', { stream: wiston.stream }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
-app.use('/', indexRouter);
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
+app.use('/api/v1', indexRouter);
 
 // catch 404 and forward to error handler
-app.use((req, res, next) => {
-  next(createError(404));
+app.all('/*', (req, res) => {
+  wiston.error( `404 -${res.message || 'Route not found'} - ${req.originalUrl} - ${req.method} - ${req.ip}`);
+  res.status(404).send({
+    status: 'error',
+    error: 'This route is unavailable on this server',
+  });
 });
 
 // get the unhandled rejection and throw it to another fallback handler we already have.
@@ -36,20 +51,16 @@ process.on('uncaughtException', (error) => {
 
 // error handler
 app.use(async (err, req, res, next) => {
-  // // set locals, only providing error in development
-  // res.locals.message = err.message;
-  // res.locals.error = req.app.get('env') === 'development' ? err : {};
-
-  if (err instanceof BaseError) {
+  if (err instanceof Error) {
+    wiston.error(`${err.status || 500} - ${err.message} - ${req.originalUrl} - ${req.method} - ${req.ip}`);
     if (ErrorHandler.isTrustedError(err)) {
       await ErrorHandler.handleError(err, res);
     } else {
-      // render the error page
-      res.status(err.status || 500).send(err);
+      sendErrorResponse(res, err.status || 500, err.message);
     }
   } else {
     next(err);
   }
 });
 
-module.exports = app;
+export default app;
