@@ -1,5 +1,5 @@
 /* eslint-disable quote-props */
-import { config } from 'dotenv';
+const { config } = require('dotenv');
 
 config();
 
