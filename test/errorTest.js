@@ -22,14 +22,14 @@ describe('Test error handlers', () => {
     done();
   });
 
-  // it('Should return not found error', (done) => {
-  //   chai.request(app)
-  //     .get('/api/v1/845989')
-  //     .end((err, res) => {
-  //       expect(res.status).eql(404);
-  //       expect(res.body).to.be.an('object');
-  //       expect(res.body.status).to.eql('error');
-  //       done();
-  //     });
-  // });
+  it('Should return not found error', (done) => {
+    chai.request(app)
+      .get('/api/v1/845989')
+      .end((err, res) => {
+        expect(res.status).eql(404);
+        expect(res.body).to.be.an('object');
+        expect(res.body.status).to.eql('error');
+        done();
+      });
+  });
 });
