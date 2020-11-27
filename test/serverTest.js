@@ -46,7 +46,6 @@ describe('Api server repository tests', () => {
   });
 
   it('Should  update record with right ID', (done) => {
-    console.log(sample.dataValues.id);
     chai.request(app)
       .put('/api/v1/update-student')
       .query({ id: sample.dataValues.id })
@@ -65,7 +64,6 @@ describe('Api server repository tests', () => {
   });
 
   it('Should  delete record with right ID', (done) => {
-    console.log(sample.dataValues.id);
     chai.request(app)
       .delete('/api/v1/delete-student')
       .query({ id: sample.dataValues.id })
