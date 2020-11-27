@@ -3,16 +3,25 @@
 // import db into this repo
 
 import { Student } from '../../../models';
+import student from '../domain/Student';
 
 class DataRepo {
   // eslint-disable-next-line no-empty-function
   constructor() {
   }
 
-  createStudent(student) {
-    return Student.create(student);
+  /**
+   * @param {student} student class which is the  Input parameter
+   * @return {student}
+   */
+  createStudent(Astudent) {
+    return Student.create(Astudent);
   }
 
+  /**
+   * @param {size} size input parameter
+   * @return {[student]}
+   */
   listStudents(size) {
     if (size) {
       return Student.findAll();
@@ -20,9 +29,14 @@ class DataRepo {
     return Student.findAll({ limit: size });
   }
 
-  updateStudentById(id, student) {
+  /**
+   * @param {id} id input parameter
+   * @param {Astudent} student input parameter
+   * @return {String}
+   */
+  updateStudentById(id, Astudent) {
     return Student.update({
-      ...student,
+      ...Astudent,
     }, {
       returning: true,
       where: {
@@ -31,6 +45,10 @@ class DataRepo {
     });
   }
 
+  /**
+   * @param {id} id input parameter
+   * @return {String}
+   */
   deleteStudentById(id) {
     return Student.destroy({
       where: { id },
